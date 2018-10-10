@@ -5,17 +5,17 @@
 
 Vector2::Vector2()
 {
-}
 
+}
 
 Vector2::~Vector2()
 {
-}
 
+}
 
 float Vector2::Magnitude()
 {
-	return sqrt((m_x * m_x) + (m_y * m_y));
+	return sqrtf((m_x * m_x) + (m_y * m_y));
 }
 
 float Vector2::DistanceToPoint(Vector2& p_point)
@@ -40,7 +40,6 @@ Vector2 Vector2::Cross(Vector2& p_vector)
 	t_Vector.m_y = (m_y*p_vector.m_x) - (m_x*p_vector.m_y);
 	return t_Vector;
 }
-
 
 Vector2 Vector2::operator+(const Vector2& p_Addend)
 {
