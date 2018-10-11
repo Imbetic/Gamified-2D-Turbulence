@@ -33,6 +33,12 @@
     <ClCompile Include="State.cpp">
       <Filter>State Stuff</Filter>
     </ClCompile>
+    <ClCompile Include="Cell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>State Stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2.h">
@@ -45,6 +51,12 @@
       <Filter>State Stuff</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
+      <Filter>State Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
       <Filter>State Stuff</Filter>
     </ClInclude>
   </ItemGroup>
