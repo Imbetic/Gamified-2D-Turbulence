@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDL.h"
+#include "Cell.h"
 
 class DrawManager
 {
@@ -12,5 +13,7 @@ public:
 	DrawManager();
 	~DrawManager();
 
-	void Draw();
+	void Clear();
+	void Draw(Cell& cell);
+	void Present();
 };

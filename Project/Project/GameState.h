@@ -7,11 +7,8 @@ class GameState: public State
 {
 private:
 
-	int m_gridx;
-	int m_gridy;
-
-	Cell* m_cells;
-	int m_numberofcells;
+	int m_numberofcells[2];
+	Cell** m_cells;
 
 public:
 
@@ -20,8 +17,9 @@ public:
 
 	void Create(int p_gridx, int p_gridy);
 	void Initialize();
-	void Update();
-	void Draw();
+	void Update(float deltatime);
+	void LateUpdate();
+	void Draw(DrawManager &p_DrawManager);
 	void Exit();
 };
 

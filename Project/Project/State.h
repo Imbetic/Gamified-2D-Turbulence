@@ -1,4 +1,5 @@
 #pragma once
+#include "DrawManager.h"
 
 class State
 {
@@ -15,8 +16,8 @@ public:
 	~State();
 
 	virtual void Initialize() = 0;
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
+	virtual void Update(float deltatime) = 0;
+	virtual void Draw(DrawManager& p_DrawManager) = 0;
 	virtual void Exit() = 0;
 
 };

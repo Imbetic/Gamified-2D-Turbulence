@@ -6,10 +6,10 @@
 class Cell : public SDL_Rect
 {
 
-private:
+public:
 	float m_water;
 	float m_viscosity;
-	Vector2 m_pressure_gradient;
+	Vector2 m_velocity;
 //	float m_salt;
 //	float m_temperature;
 //	float m_playermass;
@@ -22,6 +22,7 @@ private:
 //	Uint32 m_a;
 
 	float m_pending_water;
+	float m_excess_water;
 //	float m_pending_salt;
 //	float m_pending_temperature;
 //	Vector2 m_pending_force;
@@ -41,6 +42,7 @@ public:
 
 	void Initialize(Cell *p_top_neighbour, Cell *p_right_neighbour, Cell *p_bot_neighbour, Cell *p_left_neighbour);
 	void Receive(float p_water, float p_salt, float p_temperature);
-	void Update();
+	void Update(float deltatime);
+	void LateUpdate();
 };
 

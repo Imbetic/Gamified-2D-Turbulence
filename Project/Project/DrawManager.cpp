@@ -19,23 +19,31 @@ DrawManager::~DrawManager()
 
 }
 
-void DrawManager::Draw()
+void DrawManager::Clear()
 {
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100);
+	SDL_RenderClear(renderer);
+}
 
+void DrawManager::Draw(Cell& p_cell)
+{
+	/*
 	SDL_Rect heyyyyt;
-	heyyyyt.h = 100;
+	heyyyyt.h = p_cell.h;
 	heyyyyt.w = 100;
 	heyyyyt.x = 1;
 	heyyyyt.y = 1;
+	*/
 
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100);
+	//SDL_RenderClear(renderer);
 
-	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255*p_cell.m_water);
+	SDL_RenderFillRect(renderer, &p_cell);
 
-	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 100);
-	SDL_RenderFillRect(renderer, &heyyyyt);
+}
 
+void DrawManager::Present()
+{
 	SDL_RenderPresent(renderer);
-
-	SDL_Delay(3000);
-
 }
