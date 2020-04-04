@@ -14,14 +14,19 @@ GameState::~GameState()
 
 void GameState::Create(int p_gridx, int p_gridy)
 {
+	//setting grid size
 	m_numberofcells[0] = p_gridx;
 	m_numberofcells[1] = p_gridy;
+
+	//creating cells
 	m_cells = new Cell*[m_numberofcells[0]];
+
 	for(int i = 0; i < m_numberofcells[0]; i++)
 	{
 		m_cells[i] = new Cell[m_numberofcells[1]];
 	}
 
+	//positioning cells
 	for (int i = 0; i < m_numberofcells[0]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
@@ -32,6 +37,8 @@ void GameState::Create(int p_gridx, int p_gridy)
 			m_cells[i][j].h = 5;
 		}
 	}
+
+	//giving cells neighbour contact (initialization)
 	for (int i = 0; i < m_numberofcells[0]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)

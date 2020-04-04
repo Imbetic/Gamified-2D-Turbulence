@@ -20,9 +20,9 @@ void Cell::Initialize(Cell *p_top_neighbour, Cell *p_right_neighbour, Cell *p_bo
 	m_pending_water = 0;
 	m_excess_water = 0;
 
-	m_top_neighbour_cell = p_top_neighbour;
+	m_top_neighbour_cell = p_bot_neighbour;
 	m_right_neighbour_cell = p_right_neighbour;
-	m_bot_neighbour_cell = p_bot_neighbour;
+	m_bot_neighbour_cell = p_top_neighbour;
 	m_left_neighbour_cell = p_left_neighbour;
 	
 }
@@ -32,6 +32,7 @@ void Cell::Receive(float p_water, float p_salt, float p_temperature)
 	m_pending_water += p_water;
 	//m_pending_salt += p_salt;
 	//m_pending_temperature += p_temperature;
+	//m_pending_force += p_watertoomuch
 }
 
 float Cell::MaxDensity(float p_pressure)

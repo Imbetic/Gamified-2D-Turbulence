@@ -1,7 +1,10 @@
+#define SDL_MAIN_HANDLED
+#include "SDL.h"
+//#undef main
+
 #include "DrawManager.h"
 #include "StateManager.h"
 #include "Vector2.h"
-#include "SDL.h"
 
 //#include "stdafx.h"
 #include <string>
@@ -10,6 +13,8 @@
 
 int main(int argc, char *argv[])
 {
+	
+	
 	bool running = true;
 	DrawManager m_DrawManager;
 	StateManager m_StateManager;
@@ -46,7 +51,7 @@ int main(int argc, char *argv[])
 		}
 		
 	}
-
+	
 	return 0;
 
 }
