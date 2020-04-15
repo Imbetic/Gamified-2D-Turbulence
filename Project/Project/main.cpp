@@ -11,43 +11,44 @@
 #include <iostream>
 #include <iomanip>
 
+#include <ctime>
+#include <cstdlib>
+
 int main(int argc, char *argv[])
 {
-	
-	
+	srand(time(NULL));
+
 	bool running = true;
 	DrawManager m_DrawManager;
 	StateManager m_StateManager;
 
 	m_StateManager.Initialize(m_DrawManager);
 
-	long last = 0;
-	float deltaTime = 0.0;
-	long now = 0;
-	deltaTime = ((float)(now - last)) / 1000;
+	double m_timer = 20;
 
-	float m_timer = 10;
+	Uint64 NOW = SDL_GetPerformanceCounter();
+	Uint64 LAST = 0;
+	double deltaTime = 0;
 
 	while (running)
 	{
-		SDL_Delay(1);
-		m_timer -= deltaTime;
 
-		now = SDL_GetTicks();
+		LAST = NOW;
+		NOW = SDL_GetPerformanceCounter();
 
-		if (now > last) {
-			deltaTime = ((float)(now - last)) / 1000;
-			last = now;
-		}
+		deltaTime = (NOW - LAST) / (double)SDL_GetPerformanceFrequency();
+		
+		deltaTime = 0.02;
+		//std::cout << std::fixed << std::setprecision(10) << deltaTime << std::endl;
 
 		m_DrawManager.Clear();
 		m_StateManager.Update(deltaTime);
 		m_DrawManager.Present();
 
-		std::cout << std::fixed << std::setprecision(5) << m_timer << std::endl;
+		
 		if (m_timer < 0)
 		{
-			running = false;
+			//running = false;
 		}
 		
 	}

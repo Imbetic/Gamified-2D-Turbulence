@@ -13,12 +13,12 @@ Vector2::~Vector2()
 
 }
 
-float Vector2::Magnitude()
+double Vector2::Magnitude()
 {
 	return sqrtf((m_x * m_x) + (m_y * m_y));
 }
 
-float Vector2::DistanceToPoint(Vector2& p_point)
+double Vector2::DistanceToPoint(Vector2& p_point)
 {
 	return (*this - p_point).Magnitude();
 }
@@ -57,23 +57,23 @@ Vector2 Vector2::operator-(const Vector2& p_Subtrahend)
 	return t_Vector;
 }
 
-float Vector2::operator*(const Vector2& p_Vector)
+double Vector2::operator*(const Vector2& p_Vector)
 {
 	return (m_x * p_Vector.m_x) + (m_y + p_Vector.m_y);
 }
 
-Vector2 Vector2::operator*(const float& p_multiplier)
+Vector2 Vector2::operator*(const double& p_multiplier)
 {
 	Vector2 t_Vector;
-	t_Vector.m_x *= p_multiplier;
-	t_Vector.m_y *= p_multiplier;
+	t_Vector.m_x = m_x*p_multiplier;
+	t_Vector.m_y = m_y*p_multiplier;
 	return t_Vector;
 }
 
-Vector2 Vector2::operator/(const float& p_divisor)
+Vector2 Vector2::operator/(const double& p_divisor)
 {
 	Vector2 t_Vector;
-	t_Vector.m_x /= p_divisor;
-	t_Vector.m_y /= p_divisor;
+	t_Vector.m_x = m_x/p_divisor;
+	t_Vector.m_y = m_y/p_divisor;
 	return t_Vector;
 }

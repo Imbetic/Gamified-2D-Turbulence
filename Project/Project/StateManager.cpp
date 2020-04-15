@@ -4,7 +4,8 @@
 
 StateManager::StateManager()
 {
-
+	m_DrawManager = nullptr;
+	m_currentstate = nullptr;
 }
 
 

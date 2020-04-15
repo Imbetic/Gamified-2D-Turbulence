@@ -1,5 +1,8 @@
 #include "GameState.h"
 
+#include <string>
+#include <iostream>
+#include <iomanip>
 
 
 GameState::GameState()
@@ -15,15 +18,16 @@ GameState::~GameState()
 void GameState::Create(int p_gridx, int p_gridy)
 {
 	//setting grid size
+	totalvolume = 0;
 	m_numberofcells[0] = p_gridx;
 	m_numberofcells[1] = p_gridy;
 
 	//creating cells
-	m_cells = new Cell*[m_numberofcells[0]];
+	m_cells = new Cell*[p_gridx];
 
 	for(int i = 0; i < m_numberofcells[0]; i++)
 	{
-		m_cells[i] = new Cell[m_numberofcells[1]];
+		m_cells[i] = new Cell[p_gridy];
 	}
 
 	//positioning cells
@@ -31,10 +35,10 @@ void GameState::Create(int p_gridx, int p_gridy)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
-			m_cells[i][j].x = i*5;
-			m_cells[i][j].y = j*5;
-			m_cells[i][j].w = 5;
-			m_cells[i][j].h = 5;
+			m_cells[i][j].x = i*20;
+			m_cells[i][j].y = j*20;
+			m_cells[i][j].w = 20;
+			m_cells[i][j].h = 20;
 		}
 	}
 
@@ -64,23 +68,24 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 				if (j == 0)
 				{
-					tempcells[2] = nullptr;
-				}
-				else
-				{
-					tempcells[2] = &m_cells[i][j-1];
-				}
-
-				if (j == m_numberofcells[1] - 1)
-				{
 					tempcells[0] = nullptr;
 				}
 				else
 				{
-					tempcells[0] = &m_cells[i][j+1];
+					tempcells[0] = &m_cells[i][j-1];
+				}
+
+				if (j == m_numberofcells[1] - 1)
+				{
+					tempcells[2] = nullptr;
+				}
+				else
+				{
+					tempcells[2] = &m_cells[i][j+1];
 				}
 
 				m_cells[i][j].Initialize(tempcells[0], tempcells[1], tempcells[2], tempcells[3]);
+				
 			}
 
 	}
@@ -88,31 +93,96 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(80, 40);
+	Create(1, 20);
 }
 
-void GameState::Update(float deltatime) 
+void GameState::Update(double deltatime) 
 {
+	
+	totalvolume = 0;
+
 	for (int i = 0; i < m_numberofcells[0]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
-			m_cells[i][j].Update(deltatime);
+
+
+			m_cells[i][j].EarlyUpdate(deltatime);
+
+
 		}
 	}
-	LateUpdate();
-}
-
-void GameState::LateUpdate()
-{
+	
 	for (int i = 0; i < m_numberofcells[0]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
 			
-			m_cells[i][j].LateUpdate();
+			
+			m_cells[i][j].Update(deltatime);
+			
+			
 		}
 	}
+
+	float hey = 0;
+	
+	/*for (int i = 0; i < m_numberofcells[0]; i++)
+	{
+		for (int j = 0; j < m_numberofcells[1]; j++)
+		{
+
+
+			
+			totalvolume += m_cells[i][j].m_water;
+
+		}
+	}
+	std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
+	*/
+	LateUpdate();
+	
+	for (int i = 0; i < m_numberofcells[0]; i++)
+	{
+		for (int j = 0; j < m_numberofcells[1]; j++)
+		{
+
+			m_cells[i][j].LateUpdate(deltatime);
+			//std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_total_pressure << std::endl;
+		}
+	}
+	
+	for (int i = 0; i < m_numberofcells[0]; i++)
+	{
+		for (int j = 0; j < m_numberofcells[1]; j++)
+		{
+			
+
+			m_cells[i][j].LateUpdate2(deltatime);
+			
+			
+		}
+	}
+
+	for (int i = 0; i < m_numberofcells[0]; i++)
+	{
+		for (int j = 0; j < m_numberofcells[1]; j++)
+		{
+
+
+			std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_total_pressure << std::endl;
+
+
+		}
+	}
+}
+
+void GameState::LateUpdate()
+{
+	
+	
+	
+
 }
 
 void GameState::Draw(DrawManager& p_DrawManager) 
