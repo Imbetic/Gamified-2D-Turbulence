@@ -37,8 +37,11 @@ int main(int argc, char *argv[])
 		NOW = SDL_GetPerformanceCounter();
 
 		deltaTime = (NOW - LAST) / (double)SDL_GetPerformanceFrequency();
-		
-		deltaTime = 0.02;
+		deltaTime *= 10;
+		//deltaTime = 1 / 60;
+		//std::cout << std::fixed << "TIME" << std::endl;
+		//std::cout << std::fixed << std::setprecision(10) << deltaTime << std::endl;
+		//deltaTime = 0.05;
 		//std::cout << std::fixed << std::setprecision(10) << deltaTime << std::endl;
 
 		m_DrawManager.Clear();

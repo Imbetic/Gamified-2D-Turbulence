@@ -37,8 +37,17 @@ void DrawManager::Draw(Cell& p_cell)
 
 	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100);
 	//SDL_RenderClear(renderer);
-
-	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255*p_cell.m_water);
+	int i = 0;
+	if (p_cell.m_water == 1)
+	{
+		i = 0;
+	}
+	int j = 0;
+	if (p_cell.m_water == 0)
+	{
+		j = 0;
+	}
+	SDL_SetRenderDrawColor(renderer, 255*i, 255*j, 255 * p_cell.m_water, 255);
 	SDL_RenderFillRect(renderer, &p_cell);
 
 }

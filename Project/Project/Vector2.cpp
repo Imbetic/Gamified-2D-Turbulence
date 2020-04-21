@@ -65,6 +65,7 @@ double Vector2::operator*(const Vector2& p_Vector)
 Vector2 Vector2::operator*(const double& p_multiplier)
 {
 	Vector2 t_Vector;
+	
 	t_Vector.m_x = m_x*p_multiplier;
 	t_Vector.m_y = m_y*p_multiplier;
 	return t_Vector;

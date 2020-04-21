@@ -46,6 +46,11 @@ public:
 	Cell *m_bot_neighbour_cell = nullptr;
 	Cell *m_left_neighbour_cell = nullptr;
 
+	int m_top_not_full = 0;
+	int m_right_not_full = 0;
+	int m_bot_not_full = 0;
+	int m_left_not_full = 0;
+
 	float MaxDensity(double p_pressure);
 
 public:
@@ -53,11 +58,16 @@ public:
 	~Cell();
 
 	void Initialize(Cell *p_top_neighbour, Cell *p_right_neighbour, Cell *p_bot_neighbour, Cell *p_left_neighbour);
-	double Receive(double p_water, Vector2 p_momentum);
-	void AddForce(double p_upforce, double p_rightforce, double p_downforce, double p_leftforce);
 	void EarlyUpdate(double deltatime);
 	void Update(double deltatime);
 	void LateUpdate(double deltatime);
 	void LateUpdate2(double deltatime);
+	void LateUpdate3(double deltatime);
+	double Receive(double p_water, Vector2 p_momentum);
+
+	void SendWaterY(Cell *p_cell, int up, int down, double deltatime);
+	void SendWaterX(Cell* p_cell, int left, int right, double deltatime);
+
+	void AddForce(double p_upforce, double p_rightforce, double p_downforce, double p_leftforce);
 };
 

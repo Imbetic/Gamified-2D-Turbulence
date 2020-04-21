@@ -35,10 +35,10 @@ void GameState::Create(int p_gridx, int p_gridy)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
-			m_cells[i][j].x = i*20;
-			m_cells[i][j].y = j*20;
-			m_cells[i][j].w = 20;
-			m_cells[i][j].h = 20;
+			m_cells[i][j].x = i*5;
+			m_cells[i][j].y = j*5;
+			m_cells[i][j].w = 5;
+			m_cells[i][j].h = 5;
 		}
 	}
 
@@ -93,7 +93,7 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(1, 20);
+	Create(20, 20);
 }
 
 void GameState::Update(double deltatime) 
@@ -127,7 +127,7 @@ void GameState::Update(double deltatime)
 
 	float hey = 0;
 	
-	/*for (int i = 0; i < m_numberofcells[0]; i++)
+	for (int i = 0; i < m_numberofcells[0]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
@@ -139,7 +139,7 @@ void GameState::Update(double deltatime)
 		}
 	}
 	std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
-	*/
+	
 	LateUpdate();
 	
 	for (int i = 0; i < m_numberofcells[0]; i++)
@@ -148,7 +148,7 @@ void GameState::Update(double deltatime)
 		{
 
 			m_cells[i][j].LateUpdate(deltatime);
-			//std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_total_pressure << std::endl;
+			std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_total_pressure << std::endl;
 		}
 	}
 	
@@ -163,14 +163,14 @@ void GameState::Update(double deltatime)
 			
 		}
 	}
-
+	
 	for (int i = 0; i < m_numberofcells[0]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
+			
 
-
-			std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_total_pressure << std::endl;
+			//m_cells[i][j].LateUpdate3(deltatime);
 
 
 		}
