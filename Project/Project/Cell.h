@@ -5,65 +5,42 @@
 
 class Cell : public SDL_Rect
 {
-
+	double R = 8.3145;
+	double T = 293.15;
+	double M = 29;
 public:
-	double m_water = 0;
-	double m_viscosity = 0;
-	Vector2 m_velocity;
-//	float m_salt;
-//	float m_temperature;
-//	float m_playermass;
-//	float m_pressure;
-//	Vector2 m_force;
+	double m_gas = 0; //mass
+	
+	double m_gQ_up = 0;
+	double m_gQ_right = 0;
+	double m_gQ_down = 0;
+	double m_gQ_left = 0;
 
-	bool m_pressurized = false;
-	double m_pressure_top = 0;
-	double m_pressure_bot = 0;
-	double m_pressure_right = 0;
-	double m_pressure_left = 0;
-	double m_total_pressure = 0;
+	double m_excess_fluid = 0;
+	double m_gP = 0;
 
-	double m_pending_force_top = 0;
-	double m_pending_force_bot = 0;
-	double m_pending_force_right = 0;
-	double m_pending_force_left = 0;
+	double m_max_volume = 1;
 
-//	Uint32 m_r;
-//	Uint32 m_g;
-	Uint32 m_b = 0;
-//	Uint32 m_a;
-
-	double m_excess_water = 0;
-	double m_pressure = 0;
-//	float m_pending_salt;
-//	float m_pending_temperature;
-//	Vector2 m_pending_force;
-
-	double m_volume = 0;
-
-	Cell *m_top_neighbour_cell = nullptr;
-	Cell *m_right_neighbour_cell = nullptr;
-	Cell *m_bot_neighbour_cell = nullptr;
-	Cell *m_left_neighbour_cell = nullptr;
-
-	int m_top_not_full = 0;
-	int m_right_not_full = 0;
-	int m_bot_not_full = 0;
-	int m_left_not_full = 0;
-
-	float MaxDensity(double p_pressure);
+	Cell *m_tn = nullptr;
+	Cell *m_rn = nullptr;
+	Cell *m_bn = nullptr;
+	Cell *m_ln = nullptr;
 
 public:
 	Cell();
 	~Cell();
 
-	void Initialize(Cell *p_top_neighbour, Cell *p_right_neighbour, Cell *p_bot_neighbour, Cell *p_left_neighbour);
-	void EarlyUpdate(double deltatime);
-	void Update(double deltatime);
-	void LateUpdate(double deltatime);
-	void LateUpdate2(double deltatime);
-	void LateUpdate3(double deltatime);
-	double Receive(double p_water, Vector2 p_momentum);
+	void Initialize(Cell *p_tn, Cell *p_rn, Cell *p_bn, Cell *p_ln);
+	
+	void Density1(double dt);
+
+	void Update(double dt);
+
+	void LateUpdate(double dt);
+	void LateUpdate2(double dt);
+	void LateUpdate3(double dt);
+	
+	void Receive(double p_water, Vector2 p_momentum);
 
 	void SendWaterY(Cell *p_cell, int up, int down, double deltatime);
 	void SendWaterX(Cell* p_cell, int left, int right, double deltatime);

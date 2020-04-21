@@ -93,7 +93,7 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(20, 20);
+	Create(4, 10);
 }
 
 void GameState::Update(double deltatime) 
@@ -101,46 +101,49 @@ void GameState::Update(double deltatime)
 	
 	totalvolume = 0;
 
-	for (int i = 0; i < m_numberofcells[0]; i++)
+	for (int i = 0; i < m_numberofcells[1]; i++)
 	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
+		for (int j = 0; j < m_numberofcells[0]; j++)
 		{
 
 
-			m_cells[i][j].EarlyUpdate(deltatime);
+			m_cells[j][i].Density1(deltatime);
 
 
 		}
 	}
 	
-	for (int i = 0; i < m_numberofcells[0]; i++)
+	for (int i = 0; i < m_numberofcells[1]; i++)
 	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
+		for (int j = 0; j < m_numberofcells[0]; j++)
 		{
 			
 			
-			m_cells[i][j].Update(deltatime);
+			m_cells[j][i].Update(deltatime);
 			
 			
 		}
 	}
 
 	float hey = 0;
-	
-	for (int i = 0; i < m_numberofcells[0]; i++)
+	system("CLS");
+	for (int i = 0; i < m_numberofcells[1]; i++)
 	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
+		for (int j = 0; j < m_numberofcells[0]; j++)
 		{
 
 
 			
-			totalvolume += m_cells[i][j].m_water;
+			totalvolume += m_cells[j][i].m_gas;
+			printf("%f", m_cells[j][i].m_gas);
+			printf("  ");
 
 		}
+		printf("\n");
 	}
-	std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
+	//std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
 	
-	LateUpdate();
+	//LateUpdate();
 	
 	for (int i = 0; i < m_numberofcells[0]; i++)
 	{
@@ -148,7 +151,7 @@ void GameState::Update(double deltatime)
 		{
 
 			m_cells[i][j].LateUpdate(deltatime);
-			std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_total_pressure << std::endl;
+			//std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_pressure << std::endl;
 		}
 	}
 	
