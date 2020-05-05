@@ -5,6 +5,7 @@
 
 class Cell : public SDL_Rect
 {
+<<<<<<< Updated upstream
 
 public:
 	double m_water = 0;
@@ -27,6 +28,38 @@ public:
 	double m_pending_force_bot = 0;
 	double m_pending_force_right = 0;
 	double m_pending_force_left = 0;
+=======
+	double R = 8.3145;
+	double T = 290.15;
+	
+public:
+	double m_mixQ_up = 0;
+	double m_mixQ_right = 0;
+	double m_mixQ_down = 0;
+	double m_mixQ_left = 0;
+
+	//GAS 1
+	double m_gas = 0; //mass
+	double m_pgas;
+	double M = 29;
+
+	double m_gQ_up = 0;
+	double m_gQ_right = 0;
+	double m_gQ_down = 0;
+	double m_gQ_left = 0;
+	//END
+
+	//GAS 2
+	double m_gas2 = 0; //mass
+	double m_pgas2;
+	double M2 = 29;
+
+	double m_gQ_up2 = 0;
+	double m_gQ_right2 = 0;
+	double m_gQ_down2 = 0;
+	double m_gQ_left2 = 0;
+	//END
+>>>>>>> Stashed changes
 
 //	Uint32 m_r;
 //	Uint32 m_g;

@@ -138,6 +138,29 @@ void GameState::Update(double deltatime)
 
 		}
 	}
+<<<<<<< Updated upstream
+=======
+	//system("CLS");
+	//printf("%f", deltatime);
+	float hey = 0;
+	system("CLS");
+	for (int i = 0; i < m_numberofcells[1]; i++)
+	{
+		for (int j = 0; j < m_numberofcells[0]; j++)
+		{
+
+
+			
+			totalvolume += m_cells[j][i].m_gas2;
+			/*printf("%f", m_cells[j][i].m_gQ_left);
+			printf(" CELL ");
+			printf("%f", m_cells[j][i].m_gQ_right);
+			printf("  ");
+			*/
+		}
+		//printf("\n");
+	}
+>>>>>>> Stashed changes
 	std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
 	
 	LateUpdate();
