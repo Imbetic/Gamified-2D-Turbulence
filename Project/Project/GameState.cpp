@@ -35,10 +35,10 @@ void GameState::Create(int p_gridx, int p_gridy)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
-			m_cells[i][j].x = i*5;
-			m_cells[i][j].y = j*5;
-			m_cells[i][j].w = 5;
-			m_cells[i][j].h = 5;
+			m_cells[i][j].x = i*20;
+			m_cells[i][j].y = j*20;
+			m_cells[i][j].w = 20;
+			m_cells[i][j].h = 20;
 		}
 	}
 
@@ -93,22 +93,21 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(4, 10);
+	Create(60, 30);
 }
 
-void GameState::Update(double deltatime) 
+void GameState::Update(InputManager& p_InputManager, double deltatime) 
 {
 	
 	totalvolume = 0;
 
+
 	for (int i = 0; i < m_numberofcells[1]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[0]; j++)
 		{
 
-
-			m_cells[j][i].Density1(deltatime);
-
+			m_cells[j][i].AirPressure();
 
 		}
 	}
@@ -119,28 +118,43 @@ void GameState::Update(double deltatime)
 		{
 			
 			
-			m_cells[j][i].Update(deltatime);
+			m_cells[j][i].AirPressureForce(deltatime);
 			
 			
 		}
 	}
 
-	float hey = 0;
-	system("CLS");
 	for (int i = 0; i < m_numberofcells[1]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[0]; j++)
 		{
 
 
-			
-			totalvolume += m_cells[j][i].m_gas;
-			printf("%f", m_cells[j][i].m_gas);
-			printf("  ");
+			m_cells[j][i].AirPressureForce(deltatime);
+
 
 		}
-		printf("\n");
 	}
+	//system("CLS");
+	//printf("%f", deltatime);
+	float hey = 0;
+	//system("CLS");
+	//for (int i = 0; i < m_numberofcells[1]; i++)
+	//{
+	//	for (int j = 0; j < m_numberofcells[0]; j++)
+	//	{
+
+
+	//		
+	//		totalvolume += m_cells[j][i].m_gas;
+	//		/*printf("%f", m_cells[j][i].m_gQ_left);
+	//		printf(" CELL ");
+	//		printf("%f", m_cells[j][i].m_gQ_right);
+	//		printf("  ");
+	//		*/
+	//	}
+	//	printf("\n");
+	//}
 	//std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
 	
 	//LateUpdate();
@@ -150,7 +164,7 @@ void GameState::Update(double deltatime)
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
 
-			m_cells[i][j].LateUpdate(deltatime);
+			m_cells[i][j].VelocityUpdate(deltatime);
 			//std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_pressure << std::endl;
 		}
 	}

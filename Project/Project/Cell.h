@@ -6,11 +6,13 @@
 class Cell : public SDL_Rect
 {
 	double R = 8.3145;
-	double T = 293.15;
+	double T = 290.15;
 	double M = 29;
 public:
 	double m_gas = 0; //mass
-	
+	double m_pgas;
+
+
 	double m_gQ_up = 0;
 	double m_gQ_right = 0;
 	double m_gQ_down = 0;
@@ -32,11 +34,12 @@ public:
 
 	void Initialize(Cell *p_tn, Cell *p_rn, Cell *p_bn, Cell *p_ln);
 	
-	void Density1(double dt);
+	void AirPressure();
 
-	void Update(double dt);
+	void AirPressureForce(double dt);
 
-	void LateUpdate(double dt);
+	void VelocityUpdate(double dt);
+
 	void LateUpdate2(double dt);
 	void LateUpdate3(double dt);
 	

@@ -129,6 +129,7 @@
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="DrawManager.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Cell.h" />
     <ClInclude Include="DrawManager.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="Vector2.h" />
