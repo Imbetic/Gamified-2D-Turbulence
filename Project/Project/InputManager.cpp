@@ -21,6 +21,9 @@ void InputManager::Update()
 	m_MouseClick = false;
 	m_MouseRelease = false;
 
+	m_RightMouseClick = false;
+	m_RightMouseRelease = false;
+
 	for(int i = 0; i<4;i++) 
 	{
 		m_KeyClick[i] = false;
@@ -43,6 +46,11 @@ void InputManager::Update()
 				m_MouseClick = true;
 				m_MouseDown = true;
 			}
+			else if (m_event.button.button == SDL_BUTTON_RIGHT)
+			{
+				m_RightMouseClick = true;
+				m_RightMouseDown = true;
+			}
 			break;
 		}
 		case SDL_MOUSEBUTTONUP:
@@ -51,6 +59,11 @@ void InputManager::Update()
 			{
 				m_MouseRelease = true;
 				m_MouseDown = false;
+			}
+			else if (m_event.button.button == SDL_BUTTON_RIGHT)
+			{
+				m_RightMouseRelease = true;
+				m_RightMouseDown = false;
 			}
 			break;
 		}

@@ -7,6 +7,10 @@ class GameState: public State
 {
 private:
 
+	int m_cellsize = 10;
+	double m_xacc=0;
+	double m_yacc=0;
+
 	double totalvolume;
 	int m_numberofcells[2];
 	Cell** m_cells;

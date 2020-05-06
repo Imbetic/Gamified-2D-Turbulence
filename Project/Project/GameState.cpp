@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-
+#include <math.h>
 
 GameState::GameState()
 {
@@ -18,6 +18,8 @@ GameState::~GameState()
 void GameState::Create(int p_gridx, int p_gridy)
 {
 	//setting grid size
+	
+
 	totalvolume = 0;
 	m_numberofcells[0] = p_gridx;
 	m_numberofcells[1] = p_gridy;
@@ -35,10 +37,10 @@ void GameState::Create(int p_gridx, int p_gridy)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
-			m_cells[i][j].x = i*20;
-			m_cells[i][j].y = j*20;
-			m_cells[i][j].w = 20;
-			m_cells[i][j].h = 20;
+			m_cells[i][j].x = i * m_cellsize;
+			m_cells[i][j].y = j * m_cellsize;
+			m_cells[i][j].w = m_cellsize;
+			m_cells[i][j].h = m_cellsize;
 		}
 	}
 
@@ -93,7 +95,7 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(60, 30);
+	Create(120, 100);
 }
 
 void GameState::Update(InputManager& p_InputManager, double deltatime) 
@@ -112,25 +114,93 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 		}
 	}
 	
-	for (int i = 0; i < m_numberofcells[1]; i++)
+	/*for (int i = 0; i < m_numberofcells[1]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[0]; j++)
 		{
 			
 			
-			m_cells[j][i].AirPressureForce(deltatime);
+			m_cells[j][i].AirPressureForce(deltatime,2,2);
 			
 			
 		}
+	}*/
+
+	
+
+
+	if (p_InputManager.m_KeyDown[Key_W])
+	{
+		m_yacc = 2;
+
 	}
+	else if (p_InputManager.m_KeyDown[Key_S])
+	{
+		m_yacc = -2;
+
+	}
+	else
+	{
+		m_yacc = 0;
+	}
+	
+	if (p_InputManager.m_KeyDown[Key_D])
+	{
+		m_xacc = 2;
+
+	}
+	else if (p_InputManager.m_KeyDown[Key_A])
+	{
+		m_xacc = -2;
+
+	}
+	else
+	{
+		m_xacc = 0;
+	}
+
 
 	for (int i = 0; i < m_numberofcells[1]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[0]; j++)
 		{
+			if (i == (int)(p_InputManager.m_MousePosition.m_y / m_cellsize))
+			{
+				
+				if (j == (int)(p_InputManager.m_MousePosition.m_x / m_cellsize))
+				{
+					/*system("CLS");
+					printf("%f", (p_InputManager.m_MousePosition.m_y / m_cellsize));
+					printf("%f", (p_InputManager.m_MousePosition.m_x / m_cellsize));*/
 
+				}
 
-			m_cells[j][i].AirPressureForce(deltatime);
+			}
+			
+			if (p_InputManager.m_MouseDown)
+			{
+				double t_dx = j * m_cellsize - p_InputManager.m_MousePosition.m_x;
+				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
+				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
+				if (t_dist != 0)
+				{
+					m_cells[j][i].AirPressureForce(deltatime, -80 * (t_dx / (t_dist)), 80 * (t_dy / (t_dist)));
+				}
+			}
+			else if(p_InputManager.m_RightMouseDown)
+			{
+				double t_dx = j * m_cellsize - p_InputManager.m_MousePosition.m_x;
+				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
+				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
+				if (t_dist != 0)
+				{
+					m_cells[j][i].AirPressureForce(deltatime, 80 * (t_dx / (t_dist)), -80 * (t_dy / (t_dist)));
+				}
+			}
+			else
+			{
+				m_cells[j][i].AirPressureForce(deltatime, m_xacc, m_yacc);
+			}
 
 
 		}

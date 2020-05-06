@@ -30,10 +30,6 @@ void StateManager::Initialize(DrawManager &p_DrawManager, InputManager &p_InputM
 
 bool StateManager::Update(float deltatime)
 {
-	if (m_InputManager->m_MouseClick)
-	{
-		printf("Working here");
-	}
 	m_currentstate->Update(*m_InputManager, deltatime);
 	m_currentstate->Draw(*m_DrawManager);
 	return false;

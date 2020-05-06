@@ -37,36 +37,27 @@ void DrawManager::Draw(Cell& p_cell)
 
 	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100);
 	//SDL_RenderClear(renderer);
-	float i = 0;
+	//float i = p_cell.m_gas2 * 255;
+	float i = p_cell.m_gas2 * 255;
+	//i = 0;
 	float j = 0;
-	if (p_cell.m_gas > 1)
-	{
-		i = (p_cell.m_gas - 1) / 5;
-		j = (p_cell.m_gas - 1) / 5;
 
-		if (p_cell.m_gas > 5)
-		{
-			i = 1;
-			j = 1;
-		}
-
-	}
-	else
-	{
-		i = 0;
-		j = 0;
-	}
 
 	
-
-		
-
-	int b = p_cell.m_gas * 255;
-	if (b > 255)
+	
+	if (i > 255)
 	{
-		b = 255;
+		i = 255;
 	}
-	SDL_SetRenderDrawColor(renderer, 255*i, 255*j, b, 255);
+
+	double b = ((/*1*p_cell.m_gas+*/ (p_cell.m_gas2 / 10))/(1+1*p_cell.m_gas));
+	//b = 0;
+	if (b > 1)
+	{
+		b = 1;
+	}
+	j = b;
+	SDL_SetRenderDrawColor(renderer, (int)(b*205), (int)(b*164), (int)(b*222), 255);
 	SDL_RenderFillRect(renderer, &p_cell);
 
 }

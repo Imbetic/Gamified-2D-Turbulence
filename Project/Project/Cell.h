@@ -7,16 +7,30 @@ class Cell : public SDL_Rect
 {
 	double R = 8.3145;
 	double T = 290.15;
-	double M = 29;
+	double T2 = 290.15;
+	
 public:
-	double m_gas = 0; //mass
-	double m_pgas;
 
+	double m_gas = 0; //mass
+	double m_pfgas;
+	double M = 50;
 
 	double m_gQ_up = 0;
 	double m_gQ_right = 0;
 	double m_gQ_down = 0;
 	double m_gQ_left = 0;
+
+	//double m_gasaccy2 = 0;
+	//double m_gasaccx2 = 0;
+
+	double m_gas2 = 0; //mass
+	double m_pfgas2;
+	double M2 = 29;
+
+	double m_gQ_up2 = 0;
+	double m_gQ_right2 = 0;
+	double m_gQ_down2 = 0;
+	double m_gQ_left2 = 0;
 
 	double m_excess_fluid = 0;
 	double m_gP = 0;
@@ -36,7 +50,7 @@ public:
 	
 	void AirPressure();
 
-	void AirPressureForce(double dt);
+	void AirPressureForce(double dt, double xacc, double yacc);
 
 	void VelocityUpdate(double dt);
 

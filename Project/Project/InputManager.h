@@ -24,6 +24,11 @@ public:
 	bool m_MouseClick = false;
 	bool m_MouseDown = false;
 	bool m_MouseRelease = false;
+
+	bool m_RightMouseClick = false;
+	bool m_RightMouseDown = false;
+	bool m_RightMouseRelease = false;
+
 	Vector2 m_MousePosition;
 	void Update();
 };
