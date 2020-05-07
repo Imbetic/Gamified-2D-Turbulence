@@ -50,7 +50,7 @@ void DrawManager::Draw(Cell& p_cell)
 		i = 255;
 	}
 
-	double b = ((/*1*p_cell.m_gas+*/ (p_cell.m_gas2 / 10))/(1+1*p_cell.m_gas));
+	double b = ((5*p_cell.m_gas+ (p_cell.m_gas2 / 10))/(1+1*p_cell.m_gas));
 	//b = 0;
 	if (b > 1)
 	{

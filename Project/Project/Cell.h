@@ -12,7 +12,7 @@ class Cell : public SDL_Rect
 public:
 
 	double m_gas = 0; //mass
-	double m_pfgas;
+	double m_pgas =0;
 	double M = 50;
 
 	double m_gQ_up = 0;
@@ -20,17 +20,27 @@ public:
 	double m_gQ_down = 0;
 	double m_gQ_left = 0;
 
+	double m_pgQ_up = 0;
+	double m_pgQ_right = 0;
+	double m_pgQ_down = 0;
+	double m_pgQ_left = 0;
+
 	//double m_gasaccy2 = 0;
 	//double m_gasaccx2 = 0;
 
 	double m_gas2 = 0; //mass
-	double m_pfgas2;
+	double m_pgas2 =0;
 	double M2 = 29;
 
 	double m_gQ_up2 = 0;
 	double m_gQ_right2 = 0;
 	double m_gQ_down2 = 0;
 	double m_gQ_left2 = 0;
+
+	double m_pgQ_up2 = 0;
+	double m_pgQ_right2 = 0;
+	double m_pgQ_down2 = 0;
+	double m_pgQ_left2 = 0;
 
 	double m_excess_fluid = 0;
 	double m_gP = 0;
@@ -63,5 +73,7 @@ public:
 	void SendWaterX(Cell* p_cell, int left, int right, double deltatime);
 
 	void AddForce(double p_upforce, double p_rightforce, double p_downforce, double p_leftforce);
+
+	double GasFraction(double gas1, double gas2);
 };
 

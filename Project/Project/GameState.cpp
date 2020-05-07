@@ -95,7 +95,7 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(120, 100);
+	Create(100, 50);
 }
 
 void GameState::Update(InputManager& p_InputManager, double deltatime) 
@@ -182,9 +182,9 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 				double t_dx = j * m_cellsize - p_InputManager.m_MousePosition.m_x;
 				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
 				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
-				if (t_dist != 0)
+				if (t_dist > 20)
 				{
-					m_cells[j][i].AirPressureForce(deltatime, -80 * (t_dx / (t_dist)), 80 * (t_dy / (t_dist)));
+					m_cells[j][i].AirPressureForce(deltatime, -50 * (t_dx / (t_dist)), 50 * (t_dy / (t_dist)));
 				}
 			}
 			else if(p_InputManager.m_RightMouseDown)
@@ -192,9 +192,9 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 				double t_dx = j * m_cellsize - p_InputManager.m_MousePosition.m_x;
 				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
 				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
-				if (t_dist != 0)
+				if (t_dist > 20)
 				{
-					m_cells[j][i].AirPressureForce(deltatime, 80 * (t_dx / (t_dist)), -80 * (t_dy / (t_dist)));
+					m_cells[j][i].AirPressureForce(deltatime, 50 * (t_dx / (t_dist)), -50 * (t_dy / (t_dist)));
 				}
 			}
 			else
