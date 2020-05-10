@@ -1,6 +1,7 @@
 #include "Cell.h"
 #include <cstdlib>
 
+#include <math.h>
 
 #include <string>
 #include <iostream>
@@ -17,11 +18,11 @@ Cell::~Cell()
 
 void Cell::Initialize(Cell *p_top_neighbour, Cell *p_right_neighbour, Cell *p_bot_neighbour, Cell *p_left_neighbour)
 {
-	m_gas =0.05*( 0 + 0.3 * (double)((rand() % 4)));
+	m_gas =0.5*( 0 + 0.3 * (double)((rand() % 4)));
 	m_gas2 = 0.5*(0 + 0.3 * (double)((rand() % 4)));
 	//m_gas2 = 0;
 
-	M = 40;
+	M = 800;
 	M2 = 29;
 	T2 = T;
 	T = 200;
@@ -79,20 +80,26 @@ void Cell::AirPressureForce(double deltatime, double xacc, double yacc)
 	
 	//if (m_bn != nullptr)
 	{
+		
+		
+		m_gQ_down2 -= M2 * yacc * m_gas2 * deltatime;
+		m_gQ_up2 += M2 * yacc * m_gas2 * deltatime;
+		m_gQ_right2 += M2 * xacc * m_gas2 * deltatime;
+		m_gQ_left2 -= M2 * xacc * m_gas2 * deltatime;
+
+		/*m_gQ_down2 -= M2 * yacc * m_gas2 * deltatime;
+		m_gQ_up2 += M2 * yacc * m_gas2 * deltatime;
+		m_gQ_right2 += M2 * xacc * m_gas2 * deltatime;
+		m_gQ_left2 -= M2 * xacc * m_gas2 * deltatime;*/
+
 		m_gQ_down -= (-1) * M * m_gas * deltatime;
 		m_gQ_up += (-1) * M *  m_gas * deltatime;
-		
-		m_gQ_down -= yacc * m_gas * deltatime;
-		m_gQ_up += yacc * m_gas * deltatime;
 
 		m_gQ_down2 += 1*M2 * m_gas2 * deltatime;
 		m_gQ_up2 -= 1*M2 * m_gas2 * deltatime;
 
-		m_gQ_right += xacc /** M */* m_gas * deltatime;
-		m_gQ_left -= xacc /** M*/ * m_gas * deltatime;
-		
-		m_gQ_right2 += 0 * M2 * m_gas2 * deltatime;
-		m_gQ_left2 -= 0 * M2 * m_gas2 * deltatime;
+		//m_gQ_right2 += 1 * M2 * m_gas2 * deltatime;
+		//m_gQ_left2 -= 1 * M2 * m_gas2 * deltatime;
 
 		//m_gQ_down2 += (M2 - M) * deltatime;
 		//m_gQ_up2 -= (M2 - M) * deltatime;
@@ -240,13 +247,23 @@ void Cell::AirPressureForce(double deltatime, double xacc, double yacc)
 
 void Cell::VelocityUpdate(double deltatime)
 {
+	double friction = 0.99;
 
+	m_gQ_down = m_gQ_down/** m_gQ_down*/ * friction /** deltatime*/;
+	m_gQ_up = m_gQ_up/** m_gQ_up*/ * friction/* * deltatime*/;
+	m_gQ_right = m_gQ_right/* * m_gQ_right*/ * friction /** deltatime*/;
+	m_gQ_left = m_gQ_left/* * m_gQ_left*/ * friction /** deltatime*/;
+
+	m_gQ_down2 = m_gQ_down2/* * m_gQ_down2*/ * friction /** deltatime*/;
+	m_gQ_up2 = m_gQ_up2 /** m_gQ_up2*/ * friction /** deltatime*/;
+	m_gQ_right2 = m_gQ_right2/**m_gQ_right2*/ * friction/* * deltatime*/;
+	m_gQ_left2 = m_gQ_left2/**m_gQ_left2*/ * friction /** deltatime*/;
 	
 
 	if (m_rn != nullptr)
 	{
 		//gas1
-		if (m_gas != 0 && m_gQ_right != 0)
+		//if (m_gas != 0 && m_gQ_right > 0)
 		{
 			m_gas -= m_gQ_right * deltatime;
 			if (m_gas < 0)
@@ -273,7 +290,7 @@ void Cell::VelocityUpdate(double deltatime)
 		//END
 
 		//2
-		if (m_gas2 != 0 && m_gQ_right2 != 0)
+		//if (m_gas2 != 0 && m_gQ_right2 > 0)
 		{
 			m_gas2 -= m_gQ_right2 * deltatime;
 			if (m_gas2 < 0)
@@ -305,7 +322,7 @@ void Cell::VelocityUpdate(double deltatime)
 	if (m_tn != nullptr)
 	{
 		//gas1
-		
+		//if (m_gas != 0 && m_gQ_up > 0)
 		{
 			m_gas -= m_gQ_up * deltatime;
 			if (m_gas < 0)
@@ -334,7 +351,7 @@ void Cell::VelocityUpdate(double deltatime)
 		//END
 
 		//gas2
-		
+		//if (m_gas != 0 && m_gQ_up2 > 0)
 		{
 			m_gas2 -= m_gQ_up2 * deltatime;
 			if (m_gas2 < 0)
@@ -369,7 +386,7 @@ void Cell::VelocityUpdate(double deltatime)
 	if (m_bn != nullptr)
 	{
 		//1
-		
+		//if (m_gas != 0 && m_gQ_down > 0)
 		{
 			m_gas -= m_gQ_down * deltatime;
 			if (m_gas < 0)
@@ -396,7 +413,7 @@ void Cell::VelocityUpdate(double deltatime)
 		//END
 
 		//2
-		
+		//if (m_gas != 0 && m_gQ_down2 > 0)
 		{
 			m_gas2 -= m_gQ_down2 * deltatime;
 			if (m_gas2 < 0)
@@ -427,7 +444,7 @@ void Cell::VelocityUpdate(double deltatime)
 	if (m_ln != nullptr)
 	{
 		//1
-		
+		//if (m_gas != 0 && m_gQ_left > 0)
 		{
 			m_gas -= m_gQ_left * deltatime;
 			if (m_gas < 0)
@@ -455,7 +472,7 @@ void Cell::VelocityUpdate(double deltatime)
 		//END
 
 		//2
-		
+		//if (m_gas != 0 && m_gQ_left2 > 0)
 		{
 			m_gas2 -= m_gQ_left2 * deltatime;
 			if (m_gas2 < 0)
@@ -483,17 +500,7 @@ void Cell::VelocityUpdate(double deltatime)
 		//END
 	}
 	
-	double friction = 1.5;
-
-	m_gQ_down -= m_gQ_down/** m_gQ_down*/ * friction*deltatime;
-	m_gQ_up -= m_gQ_up/** m_gQ_up*/ * friction * deltatime;
-	m_gQ_right -= m_gQ_right/* * m_gQ_right*/* friction * deltatime;
-	m_gQ_left -= m_gQ_left/* * m_gQ_left*/* friction * deltatime;
-
-	m_gQ_down2 -= m_gQ_down2/* * m_gQ_down2*/*friction * deltatime;
-	m_gQ_up2 -= m_gQ_up2 /** m_gQ_up2*/* friction * deltatime;
-	m_gQ_right2 -= m_gQ_right2/**m_gQ_right2*/ * friction * deltatime;
-	m_gQ_left2 -= m_gQ_left2/**m_gQ_left2*/ * friction * deltatime;
+	
 }
 
 void Cell::LateUpdate2(double deltatime)

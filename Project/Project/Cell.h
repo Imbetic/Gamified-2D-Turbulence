@@ -5,7 +5,7 @@
 
 class Cell : public SDL_Rect
 {
-	double R = 8.3145;
+	double R =8.3145;
 	double T = 290.15;
 	double T2 = 290.15;
 	

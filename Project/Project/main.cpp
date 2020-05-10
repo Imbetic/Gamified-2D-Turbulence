@@ -40,8 +40,9 @@ int main(int argc, char *argv[])
 		NOW = SDL_GetPerformanceCounter();
 
 		deltaTime = (NOW - LAST) / (double)SDL_GetPerformanceFrequency();
-		deltaTime *= 1;
-		//deltaTime = 1 / 60;
+		deltaTime *= 0.5;
+		
+		
 		//std::cout << std::fixed << "TIME" << std::endl;
 		//std::cout << std::fixed << std::setprecision(10) << deltaTime << std::endl;
 		//deltaTime = 0.05;

@@ -95,7 +95,7 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(100, 50);
+	Create(90, 60);
 }
 
 void GameState::Update(InputManager& p_InputManager, double deltatime) 
@@ -131,12 +131,12 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 
 	if (p_InputManager.m_KeyDown[Key_W])
 	{
-		m_yacc = 2;
+		m_yacc = 4;
 
 	}
 	else if (p_InputManager.m_KeyDown[Key_S])
 	{
-		m_yacc = -2;
+		m_yacc = -4;
 
 	}
 	else
@@ -146,12 +146,12 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 	
 	if (p_InputManager.m_KeyDown[Key_D])
 	{
-		m_xacc = 2;
+		m_xacc = 4;
 
 	}
 	else if (p_InputManager.m_KeyDown[Key_A])
 	{
-		m_xacc = -2;
+		m_xacc = -4;
 
 	}
 	else
@@ -182,9 +182,9 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 				double t_dx = j * m_cellsize - p_InputManager.m_MousePosition.m_x;
 				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
 				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
-				if (t_dist > 20)
+				if (t_dist != 0)
 				{
-					m_cells[j][i].AirPressureForce(deltatime, -50 * (t_dx / (t_dist)), 50 * (t_dy / (t_dist)));
+					m_cells[j][i].AirPressureForce(deltatime, -3 * (t_dx / (t_dist)), 3 * (t_dy / (t_dist)));
 				}
 			}
 			else if(p_InputManager.m_RightMouseDown)
@@ -192,9 +192,9 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 				double t_dx = j * m_cellsize - p_InputManager.m_MousePosition.m_x;
 				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
 				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
-				if (t_dist > 20)
+				if (t_dist !=0)
 				{
-					m_cells[j][i].AirPressureForce(deltatime, 50 * (t_dx / (t_dist)), -50 * (t_dy / (t_dist)));
+					m_cells[j][i].AirPressureForce(deltatime, 3 * (t_dx / (t_dist)), -3 * (t_dy / (t_dist)));
 				}
 			}
 			else
@@ -207,7 +207,7 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 	}
 	//system("CLS");
 	//printf("%f", deltatime);
-	float hey = 0;
+	//float hey = 0;
 	//system("CLS");
 	//for (int i = 0; i < m_numberofcells[1]; i++)
 	//{
@@ -223,7 +223,7 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 	//		printf("  ");
 	//		*/
 	//	}
-	//	printf("\n");
+	//	//printf("\n");
 	//}
 	//std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
 	
