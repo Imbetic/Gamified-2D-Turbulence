@@ -30,7 +30,7 @@ void StateManager::Initialize(DrawManager &p_DrawManager, InputManager &p_InputM
 
 bool StateManager::Update(float deltatime)
 {
-	m_currentstate->Update(*m_InputManager, deltatime);
-	m_currentstate->Draw(*m_DrawManager);
+	m_currentstate->Update(*m_InputManager, *m_DrawManager, deltatime);
+	//m_currentstate->Draw();
 	return false;
 }

@@ -98,7 +98,7 @@ void GameState::Initialize()
 	Create(90, 60);
 }
 
-void GameState::Update(InputManager& p_InputManager, double deltatime) 
+void GameState::Update(InputManager& p_InputManager, DrawManager& p_DrawManager, double deltatime)
 {
 	
 	totalvolume = 0;
@@ -114,6 +114,8 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 		}
 	}
 	
+	Draw(p_DrawManager);
+
 	/*for (int i = 0; i < m_numberofcells[1]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[0]; j++)
@@ -129,35 +131,7 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 	
 
 
-	if (p_InputManager.m_KeyDown[Key_W])
-	{
-		m_yacc = 4;
 
-	}
-	else if (p_InputManager.m_KeyDown[Key_S])
-	{
-		m_yacc = -4;
-
-	}
-	else
-	{
-		m_yacc = 0;
-	}
-	
-	if (p_InputManager.m_KeyDown[Key_D])
-	{
-		m_xacc = 4;
-
-	}
-	else if (p_InputManager.m_KeyDown[Key_A])
-	{
-		m_xacc = -4;
-
-	}
-	else
-	{
-		m_xacc = 0;
-	}
 
 
 	for (int i = 0; i < m_numberofcells[1]; i++)
@@ -177,14 +151,49 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 
 			}
 			
+
+
+			if (p_InputManager.m_KeyDown[Key_W])
+			{
+				m_yacc = 1*deltatime;
+
+			}
+			else if (p_InputManager.m_KeyDown[Key_S])
+			{
+				m_yacc = -1 * deltatime;
+
+			}
+			else
+			{
+				m_yacc = 0;
+			}
+
+			if (p_InputManager.m_KeyDown[Key_D])
+			{
+				m_xacc = 1 * deltatime;
+
+			}
+			else if (p_InputManager.m_KeyDown[Key_A])
+			{
+				m_xacc = -1 * deltatime;
+
+			}
+			else
+			{
+				m_xacc = 0;
+			}
+
+			m_cells[j][i].Gravity(m_xacc, m_yacc);
+			
+
 			if (p_InputManager.m_MouseDown)
 			{
-				double t_dx = j * m_cellsize - p_InputManager.m_MousePosition.m_x;
+				double t_dx = j * m_cellsize - (p_InputManager.m_MousePosition.m_x);
 				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
 				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
 				if (t_dist != 0)
 				{
-					m_cells[j][i].AirPressureForce(deltatime, -3 * (t_dx / (t_dist)), 3 * (t_dy / (t_dist)));
+					m_cells[j][i].MovePlayer1(deltatime, (t_dx/t_dist) * sqrtf(t_dist), (t_dy/t_dist)*sqrtf(t_dist));
 				}
 			}
 			else if(p_InputManager.m_RightMouseDown)
@@ -194,15 +203,19 @@ void GameState::Update(InputManager& p_InputManager, double deltatime)
 				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
 				if (t_dist !=0)
 				{
-					m_cells[j][i].AirPressureForce(deltatime, 3 * (t_dx / (t_dist)), -3 * (t_dy / (t_dist)));
+					m_cells[j][i].MovePlayer2(deltatime, -t_dx / (t_dist*t_dist), -t_dy / (t_dist*t_dist));
 				}
 			}
-			else
+			
+
+			m_cells[j][i].AirPressureForce(deltatime);
+			if (p_InputManager.m_MouseDown)
 			{
-				m_cells[j][i].AirPressureForce(deltatime, m_xacc, m_yacc);
+				m_cells[j][i].m_gQ_down *= 0.99;
+				m_cells[j][i].m_gQ_up *= 0.99;
+				m_cells[j][i].m_gQ_left *= 0.99;
+				m_cells[j][i].m_gQ_right *= 0.99;
 			}
-
-
 		}
 	}
 	//system("CLS");

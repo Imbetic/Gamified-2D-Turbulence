@@ -22,7 +22,7 @@ public:
 
 	void Create(int p_gridx, int p_gridy);
 	void Initialize();
-	void Update(InputManager &p_InputManager, double deltatime);
+	void Update(InputManager &p_InputManager, DrawManager& p_DrawManager, double deltatime);
 	void LateUpdate();
 	void Draw(DrawManager &p_DrawManager);
 	void Exit();

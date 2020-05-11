@@ -60,7 +60,12 @@ public:
 	
 	void AirPressure();
 
-	void AirPressureForce(double dt, double xacc, double yacc);
+	void AirPressureForce(double dt);
+
+	void MovePlayer1(double dt, double xacc, double yacc);
+	void MovePlayer2(double dt, double xacc, double yacc);
+	void Gravity(double xacc, double yacc);
+
 
 	void VelocityUpdate(double dt);
 

@@ -18,15 +18,16 @@ Cell::~Cell()
 
 void Cell::Initialize(Cell *p_top_neighbour, Cell *p_right_neighbour, Cell *p_bot_neighbour, Cell *p_left_neighbour)
 {
-	m_gas =0.5*( 0 + 0.3 * (double)((rand() % 4)));
-	m_gas2 = 0.5*(0 + 0.3 * (double)((rand() % 4)));
+	m_gas =0.05*( 0 + 0.3 * (double)((rand() % 4)));
+	m_gas2 = 3*(0 + 0.3 * (double)((rand() % 4)));
 	//m_gas2 = 0;
 
-	M = 800;
+	M = 100;
 	M2 = 29;
 	T2 = T;
-	T = 200;
+	//T = 200;
 	//m_gas = 1.225;
+	//R = 4;
 
 	m_gP = 0;
 	m_excess_fluid = 0;
@@ -75,43 +76,50 @@ void Cell::AirPressure()
 	m_gP = (((m_gas/*/M*/)) * R * T)+(m_gas2/*/M2*/)*R*T2;
 }
 
-void Cell::AirPressureForce(double deltatime, double xacc, double yacc)
+void Cell::MovePlayer1(double dt, double xacc, double yacc)
 {
-	
-	//if (m_bn != nullptr)
-	{
-		
-		
-		m_gQ_down2 -= M2 * yacc * m_gas2 * deltatime;
-		m_gQ_up2 += M2 * yacc * m_gas2 * deltatime;
-		m_gQ_right2 += M2 * xacc * m_gas2 * deltatime;
-		m_gQ_left2 -= M2 * xacc * m_gas2 * deltatime;
+	m_gQ_down -= 50*yacc * m_gas * dt;
+	m_gQ_up += 50 * yacc * m_gas * dt;
+	m_gQ_right -= 50 * xacc * m_gas * dt;
+	m_gQ_left += 50 * xacc * m_gas * dt;
 
-		/*m_gQ_down2 -= M2 * yacc * m_gas2 * deltatime;
-		m_gQ_up2 += M2 * yacc * m_gas2 * deltatime;
-		m_gQ_right2 += M2 * xacc * m_gas2 * deltatime;
-		m_gQ_left2 -= M2 * xacc * m_gas2 * deltatime;*/
 
-		m_gQ_down -= (-1) * M * m_gas * deltatime;
-		m_gQ_up += (-1) * M *  m_gas * deltatime;
+	m_gQ_down *= 0.999;
+	m_gQ_up *= 0.999;
+	m_gQ_left *= 0.999;
+	m_gQ_right *= 0.999;
+	/*m_gQ_down2 -= M2 * yacc * m_gas2 * dt;
+	m_gQ_up2 += M2 * yacc * m_gas2 * dt;
+	m_gQ_right2 -= M2 * xacc * m_gas2 * dt;
+	m_gQ_left2 += M2 * xacc * m_gas2 * dt;*/
 
-		m_gQ_down2 += 1*M2 * m_gas2 * deltatime;
-		m_gQ_up2 -= 1*M2 * m_gas2 * deltatime;
 
-		//m_gQ_right2 += 1 * M2 * m_gas2 * deltatime;
-		//m_gQ_left2 -= 1 * M2 * m_gas2 * deltatime;
+}
 
-		//m_gQ_down2 += (M2 - M) * deltatime;
-		//m_gQ_up2 -= (M2 - M) * deltatime;
-	}
-	//else
-	{
-		//m_gQ_down2 += m_gas2 * (m_gas2*M2 - m_gas*M) * deltatime;
-		//m_gQ_up2 -= m_gas2 * (m_gas*M2 - m_gas*M) * deltatime;
-	}
+void Cell::MovePlayer2(double dt, double xacc, double yacc)
+{
+	m_gQ_down2 -= 20000 * yacc * m_gas2 * dt;
+	m_gQ_up2 += 20000 * yacc * m_gas2 * dt;
+	m_gQ_right2 -= 20000 * xacc * m_gas2 * dt;
+	m_gQ_left2 += 20000 * xacc * m_gas2 * dt;
+}
 
-	//m_gQ_left -= 20 * deltatime;
-	//m_gQ_right += 20 * deltatime;
+void Cell::Gravity(double xacc, double yacc)
+{
+	m_gQ_down -= 2*(yacc) * M * m_gas;
+	m_gQ_up += 2 * (yacc) * M * m_gas;
+	m_gQ_right += 2 * (xacc)*M * m_gas;
+	m_gQ_left -= 2 * (xacc)*M * m_gas;
+
+	m_gQ_down2 -= 2 * (yacc)*M2 * m_gas2;
+	m_gQ_up2 += 2 * (yacc)*M2 * m_gas2;
+	m_gQ_right2 += 2 * (xacc)*M2 * m_gas2;
+	m_gQ_left2 -= 2 * (xacc)*M2 * m_gas2;
+
+}
+
+void Cell::AirPressureForce(double deltatime)
+{
 	double t_p = 0;
 	if (m_rn != nullptr)
 	{
@@ -247,12 +255,29 @@ void Cell::AirPressureForce(double deltatime, double xacc, double yacc)
 
 void Cell::VelocityUpdate(double deltatime)
 {
-	double friction = 0.99;
+	double friction = 0.990;
 
 	m_gQ_down = m_gQ_down/** m_gQ_down*/ * friction /** deltatime*/;
 	m_gQ_up = m_gQ_up/** m_gQ_up*/ * friction/* * deltatime*/;
 	m_gQ_right = m_gQ_right/* * m_gQ_right*/ * friction /** deltatime*/;
 	m_gQ_left = m_gQ_left/* * m_gQ_left*/ * friction /** deltatime*/;
+
+	/*if (m_gQ_down* m_gQ_down*m_gas < 0.00001)
+	{
+		m_gQ_down = 0;
+	}
+	if (m_gQ_up* m_gQ_up * m_gas < 0.00001)
+	{
+		m_gQ_up = 0;
+	}
+	if (m_gQ_right* m_gQ_right * m_gas < 0.00001)
+	{
+		m_gQ_right = 0;
+	}
+	if (m_gQ_left* m_gQ_left * m_gas < 0.00001)
+	{
+		m_gQ_left = 0;
+	}*/
 
 	m_gQ_down2 = m_gQ_down2/* * m_gQ_down2*/ * friction /** deltatime*/;
 	m_gQ_up2 = m_gQ_up2 /** m_gQ_up2*/ * friction /** deltatime*/;
@@ -265,26 +290,31 @@ void Cell::VelocityUpdate(double deltatime)
 		//gas1
 		//if (m_gas != 0 && m_gQ_right > 0)
 		{
-			m_gas -= m_gQ_right * deltatime;
-			if (m_gas < 0)
+			//if (M* m_gas * sqrtf(m_gQ_right* m_gQ_right + (m_gQ_down + m_gQ_up)* (m_gQ_down + m_gQ_up)) > 20)
 			{
-				m_rn->m_pgas += (m_gQ_right * deltatime) + m_gas;
+				m_gas -= m_gQ_right * deltatime;
 
-				m_rn->m_pgQ_right += ((m_gQ_right * deltatime) + m_gas) * GasFraction(M * (((m_gQ_right * deltatime) + m_gas) + m_rn->m_gas), M2 * m_rn->m_gas2);
-				m_rn->m_pgQ_right2 += (M / M2) * ((m_gQ_right * deltatime) + m_gas) * GasFraction(M2 * m_rn->m_gas2, M * (((m_gQ_right * deltatime) + m_gas) + m_rn->m_gas));
+				if (m_gas < 0)
+				{
+					m_rn->m_pgas += (m_gQ_right * deltatime) + m_gas;
 
-				m_gas = 0;
+					m_rn->m_pgQ_right += ((m_gQ_right * deltatime) + m_gas) * GasFraction(M * (((m_gQ_right * deltatime) + m_gas) + m_rn->m_gas), M2 * m_rn->m_gas2);
+					m_rn->m_pgQ_right2 += (M / M2) * ((m_gQ_right * deltatime) + m_gas) * GasFraction(M2 * m_rn->m_gas2, M * (((m_gQ_right * deltatime) + m_gas) + m_rn->m_gas));
 
-				m_gQ_up = 0;
-				m_gQ_right = 0;
-				m_gQ_down = 0;
-				m_gQ_left = 0;
-			}
-			else
-			{
-				m_rn->m_pgas += m_gQ_right * deltatime;
-				m_rn->m_pgQ_right += ((m_gQ_right * deltatime)) * GasFraction(M * (((m_gQ_right * deltatime)) + m_rn->m_gas), M2 * m_rn->m_gas2);
-				m_rn->m_pgQ_right2 += (M / M2) * ((m_gQ_right * deltatime)) * GasFraction(M2 * m_rn->m_gas2, M * (((m_gQ_right * deltatime)) + m_rn->m_gas));
+					m_gas = 0;
+
+					m_gQ_up = 0;
+					m_gQ_right = 0;
+					m_gQ_down = 0;
+					m_gQ_left = 0;
+				}
+				else
+				{
+					m_rn->m_pgas += m_gQ_right * deltatime;
+					m_rn->m_pgQ_right += ((m_gQ_right * deltatime)) * GasFraction(M * (((m_gQ_right * deltatime)) + m_rn->m_gas), M2 * m_rn->m_gas2);
+					m_rn->m_pgQ_right2 += (M / M2) * ((m_gQ_right * deltatime)) * GasFraction(M2 * m_rn->m_gas2, M * (((m_gQ_right * deltatime)) + m_rn->m_gas));
+
+				}
 			}
 		}
 		//END
@@ -324,28 +354,32 @@ void Cell::VelocityUpdate(double deltatime)
 		//gas1
 		//if (m_gas != 0 && m_gQ_up > 0)
 		{
-			m_gas -= m_gQ_up * deltatime;
-			if (m_gas < 0)
+			//if (M * m_gas*sqrtf(m_gQ_up * m_gQ_up + (m_gQ_left + m_gQ_right) * (m_gQ_left + m_gQ_right)) > 20)
 			{
-				m_tn->m_pgas += (m_gQ_up * deltatime) + m_gas;
-				
-				m_tn->m_pgQ_up += ((m_gQ_up * deltatime) + m_gas) * GasFraction(M*(((m_gQ_up * deltatime) + m_gas)+m_tn->m_gas), M2*m_tn->m_gas2);
-				m_tn->m_pgQ_up2 += (M / M2) * ((m_gQ_up * deltatime) + m_gas) * GasFraction(M2*m_tn->m_gas2, M*(((m_gQ_up * deltatime) + m_gas) + m_tn->m_gas));
-				
+				m_gas -= m_gQ_up * deltatime;
 
-				m_gas = 0;
+				if (m_gas < 0)
+				{
+					m_tn->m_pgas += (m_gQ_up * deltatime) + m_gas;
 
-				m_gQ_up = 0;
-				m_gQ_right = 0;
-				m_gQ_down = 0;
-				m_gQ_left = 0;
-			}
-			else
-			{
-				m_tn->m_pgas += m_gQ_up * deltatime;
+					m_tn->m_pgQ_up += ((m_gQ_up * deltatime) + m_gas) * GasFraction(M * (((m_gQ_up * deltatime) + m_gas) + m_tn->m_gas), M2 * m_tn->m_gas2);
+					m_tn->m_pgQ_up2 += (M / M2) * ((m_gQ_up * deltatime) + m_gas) * GasFraction(M2 * m_tn->m_gas2, M * (((m_gQ_up * deltatime) + m_gas) + m_tn->m_gas));
 
-				m_tn->m_pgQ_up += ((m_gQ_up * deltatime)) * GasFraction(M * (((m_gQ_up * deltatime)) + m_tn->m_gas), M2 * m_tn->m_gas2);
-				m_tn->m_pgQ_up2 += (M/M2)*((m_gQ_up * deltatime)) * GasFraction(M2 * m_tn->m_gas2, M * (((m_gQ_up * deltatime)) + m_tn->m_gas));
+
+					m_gas = 0;
+
+					m_gQ_up = 0;
+					m_gQ_right = 0;
+					m_gQ_down = 0;
+					m_gQ_left = 0;
+				}
+				else
+				{
+					m_tn->m_pgas += m_gQ_up * deltatime;
+
+					m_tn->m_pgQ_up += ((m_gQ_up * deltatime)) * GasFraction(M * (((m_gQ_up * deltatime)) + m_tn->m_gas), M2 * m_tn->m_gas2);
+					m_tn->m_pgQ_up2 += (M / M2) * ((m_gQ_up * deltatime)) * GasFraction(M2 * m_tn->m_gas2, M * (((m_gQ_up * deltatime)) + m_tn->m_gas));
+				}
 			}
 		}
 		//END
@@ -388,26 +422,29 @@ void Cell::VelocityUpdate(double deltatime)
 		//1
 		//if (m_gas != 0 && m_gQ_down > 0)
 		{
-			m_gas -= m_gQ_down * deltatime;
-			if (m_gas < 0)
+			//if (M * m_gas * sqrtf(m_gQ_down * m_gQ_down + (m_gQ_left + m_gQ_right) * (m_gQ_left + m_gQ_right)) > 20)
 			{
-				m_bn->m_pgas += (m_gQ_down * deltatime) + m_gas;
+				m_gas -= m_gQ_down * deltatime;
+				if (m_gas < 0)
+				{
+					m_bn->m_pgas += (m_gQ_down * deltatime) + m_gas;
 
-				m_bn->m_pgQ_down += ((m_gQ_down * deltatime) + m_gas) * GasFraction(M * (((m_gQ_down * deltatime) + m_gas) + m_bn->m_gas), M2 * m_bn->m_gas2);
-				m_bn->m_pgQ_down2 += (M / M2) * ((m_gQ_down * deltatime) + m_gas) * GasFraction(M2 * m_bn->m_gas2, M * (((m_gQ_down * deltatime) + m_gas) + m_bn->m_gas));
+					m_bn->m_pgQ_down += ((m_gQ_down * deltatime) + m_gas) * GasFraction(M * (((m_gQ_down * deltatime) + m_gas) + m_bn->m_gas), M2 * m_bn->m_gas2);
+					m_bn->m_pgQ_down2 += (M / M2) * ((m_gQ_down * deltatime) + m_gas) * GasFraction(M2 * m_bn->m_gas2, M * (((m_gQ_down * deltatime) + m_gas) + m_bn->m_gas));
 
-				m_gas = 0;
+					m_gas = 0;
 
-				m_gQ_up = 0;
-				m_gQ_right = 0;
-				m_gQ_down = 0;
-				m_gQ_left = 0;
-			}
-			else
-			{
-				m_bn->m_pgas += m_gQ_down * deltatime;
-				m_bn->m_pgQ_down += ((m_gQ_down * deltatime)) * GasFraction(M * (((m_gQ_down * deltatime)) + m_bn->m_gas), M2 * m_bn->m_gas2);
-				m_bn->m_pgQ_down2 += (M / M2) * ((m_gQ_down * deltatime)) * GasFraction(M2 * m_bn->m_gas2, M * (((m_gQ_down * deltatime)) + m_bn->m_gas));
+					m_gQ_up = 0;
+					m_gQ_right = 0;
+					m_gQ_down = 0;
+					m_gQ_left = 0;
+				}
+				else
+				{
+					m_bn->m_pgas += m_gQ_down * deltatime;
+					m_bn->m_pgQ_down += ((m_gQ_down * deltatime)) * GasFraction(M * (((m_gQ_down * deltatime)) + m_bn->m_gas), M2 * m_bn->m_gas2);
+					m_bn->m_pgQ_down2 += (M / M2) * ((m_gQ_down * deltatime)) * GasFraction(M2 * m_bn->m_gas2, M * (((m_gQ_down * deltatime)) + m_bn->m_gas));
+				}
 			}
 		}
 		//END
@@ -446,27 +483,30 @@ void Cell::VelocityUpdate(double deltatime)
 		//1
 		//if (m_gas != 0 && m_gQ_left > 0)
 		{
-			m_gas -= m_gQ_left * deltatime;
-			if (m_gas < 0)
+			//if (M * m_gas * sqrtf(m_gQ_left * m_gQ_left + (m_gQ_down + m_gQ_up) * (m_gQ_down + m_gQ_up)) > 20)
 			{
-				m_ln->m_pgas += (m_gQ_left * deltatime) + m_gas;
+				m_gas -= m_gQ_left * deltatime;
+				if (m_gas < 0)
+				{
+					m_ln->m_pgas += (m_gQ_left * deltatime) + m_gas;
 
-				m_ln->m_pgQ_left += ((m_gQ_left * deltatime) + m_gas) * GasFraction(M * (((m_gQ_left * deltatime) + m_gas) + m_ln->m_gas), M2 * m_ln->m_gas2);
-				m_ln->m_pgQ_left2 += (M / M2) * ((m_gQ_left * deltatime) + m_gas) * GasFraction(M2 * m_ln->m_gas2, M * (((m_gQ_left * deltatime) + m_gas) + m_ln->m_gas));
+					m_ln->m_pgQ_left += ((m_gQ_left * deltatime) + m_gas) * GasFraction(M * (((m_gQ_left * deltatime) + m_gas) + m_ln->m_gas), M2 * m_ln->m_gas2);
+					m_ln->m_pgQ_left2 += (M / M2) * ((m_gQ_left * deltatime) + m_gas) * GasFraction(M2 * m_ln->m_gas2, M * (((m_gQ_left * deltatime) + m_gas) + m_ln->m_gas));
 
-				m_gas = 0;
+					m_gas = 0;
 
-				m_gQ_up = 0;
-				m_gQ_right = 0;
-				m_gQ_down = 0;
-				m_gQ_left = 0;
-			}
-			else
-			{
-				m_ln->m_pgas += m_gQ_left * deltatime;
+					m_gQ_up = 0;
+					m_gQ_right = 0;
+					m_gQ_down = 0;
+					m_gQ_left = 0;
+				}
+				else
+				{
+					m_ln->m_pgas += m_gQ_left * deltatime;
 
-				m_ln->m_pgQ_left += ((m_gQ_left * deltatime)) * GasFraction(M * (((m_gQ_left * deltatime)) + m_ln->m_gas), M2 * m_ln->m_gas2);
-				m_ln->m_pgQ_left2 += (M / M2) * ((m_gQ_left * deltatime)) * GasFraction(M2 * m_ln->m_gas2, M * (((m_gQ_left * deltatime)) + m_ln->m_gas));
+					m_ln->m_pgQ_left += ((m_gQ_left * deltatime)) * GasFraction(M * (((m_gQ_left * deltatime)) + m_ln->m_gas), M2 * m_ln->m_gas2);
+					m_ln->m_pgQ_left2 += (M / M2) * ((m_gQ_left * deltatime)) * GasFraction(M2 * m_ln->m_gas2, M * (((m_gQ_left * deltatime)) + m_ln->m_gas));
+				}
 			}
 		}
 		//END
