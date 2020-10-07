@@ -47,6 +47,10 @@ public:
 
 	double m_max_volume = 1;
 
+	double t_flow = 0;
+	double friction = 0;
+	double friction2 = 0;
+
 	Cell *m_tn = nullptr;
 	Cell *m_rn = nullptr;
 	Cell *m_bn = nullptr;
@@ -80,5 +84,9 @@ public:
 	void AddForce(double p_upforce, double p_rightforce, double p_downforce, double p_leftforce);
 
 	double GasFraction(double gas1, double gas2);
+
+	double GetTotMass();
+	double GetMass1();
+	double GetMass2();
 };
 

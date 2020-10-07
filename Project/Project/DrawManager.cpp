@@ -45,7 +45,7 @@ void DrawManager::Draw(Cell& p_cell)
 	double b = 4*((p_cell.m_gas)/(1+1*p_cell.m_gas));
 	//b = p_cell.m_gas;
 
-	float i = 0.5 * ((p_cell.m_gas2) / (1 + 1 * p_cell.m_gas2));
+	float i = 1 * ((p_cell.m_gas2) / (1 + 1 * p_cell.m_gas2));
 
 	if (b > 1)
 	{

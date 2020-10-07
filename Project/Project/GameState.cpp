@@ -95,7 +95,7 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(90, 60);
+	Create(50, 50);
 }
 
 void GameState::Update(InputManager& p_InputManager, DrawManager& p_DrawManager, double deltatime)
@@ -221,6 +221,7 @@ void GameState::Update(InputManager& p_InputManager, DrawManager& p_DrawManager,
 	//system("CLS");
 	//printf("%f", deltatime);
 	//float hey = 0;
+
 	//system("CLS");
 	//for (int i = 0; i < m_numberofcells[1]; i++)
 	//{
@@ -252,29 +253,6 @@ void GameState::Update(InputManager& p_InputManager, DrawManager& p_DrawManager,
 		}
 	}
 	
-	for (int i = 0; i < m_numberofcells[0]; i++)
-	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
-		{
-			
-
-			m_cells[i][j].LateUpdate2(deltatime);
-			
-			
-		}
-	}
-	
-	for (int i = 0; i < m_numberofcells[0]; i++)
-	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
-		{
-			
-
-			//m_cells[i][j].LateUpdate3(deltatime);
-
-
-		}
-	}
 }
 
 void GameState::LateUpdate()
