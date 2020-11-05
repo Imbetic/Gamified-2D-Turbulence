@@ -39,6 +39,9 @@
     <ClCompile Include="GameState.cpp">
       <Filter>State Stuff</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2.h">
@@ -58,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>State Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 
 #include "DrawManager.h"
 #include "StateManager.h"
+#include "InputManager.h"
 #include "Vector2.h"
 
 //#include "stdafx.h"
@@ -21,8 +22,9 @@ int main(int argc, char *argv[])
 	bool running = true;
 	DrawManager m_DrawManager;
 	StateManager m_StateManager;
+	InputManager m_InputManager;
 
-	m_StateManager.Initialize(m_DrawManager);
+	m_StateManager.Initialize(m_DrawManager, m_InputManager);
 
 	double m_timer = 20;
 
@@ -32,13 +34,15 @@ int main(int argc, char *argv[])
 
 	while (running)
 	{
+		m_InputManager.Update();
 
 		LAST = NOW;
 		NOW = SDL_GetPerformanceCounter();
 
 		deltaTime = (NOW - LAST) / (double)SDL_GetPerformanceFrequency();
-		deltaTime *= 10;
-		//deltaTime = 1 / 60;
+		deltaTime *= 0.5;
+		
+		
 		//std::cout << std::fixed << "TIME" << std::endl;
 		//std::cout << std::fixed << std::setprecision(10) << deltaTime << std::endl;
 		//deltaTime = 0.05;

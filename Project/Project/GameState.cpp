@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-
+#include <math.h>
 
 GameState::GameState()
 {
@@ -18,6 +18,8 @@ GameState::~GameState()
 void GameState::Create(int p_gridx, int p_gridy)
 {
 	//setting grid size
+	
+
 	totalvolume = 0;
 	m_numberofcells[0] = p_gridx;
 	m_numberofcells[1] = p_gridy;
@@ -35,10 +37,10 @@ void GameState::Create(int p_gridx, int p_gridy)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
-			m_cells[i][j].x = i*5;
-			m_cells[i][j].y = j*5;
-			m_cells[i][j].w = 5;
-			m_cells[i][j].h = 5;
+			m_cells[i][j].x = i * m_cellsize;
+			m_cells[i][j].y = j * m_cellsize;
+			m_cells[i][j].w = m_cellsize;
+			m_cells[i][j].h = m_cellsize;
 		}
 	}
 
@@ -93,88 +95,164 @@ void GameState::Create(int p_gridx, int p_gridy)
 
 void GameState::Initialize() 
 {
-	Create(20, 20);
+	Create(50, 50);
 }
 
-void GameState::Update(double deltatime) 
+void GameState::Update(InputManager& p_InputManager, DrawManager& p_DrawManager, double deltatime)
 {
 	
 	totalvolume = 0;
 
-	for (int i = 0; i < m_numberofcells[0]; i++)
+
+	for (int i = 0; i < m_numberofcells[1]; i++)
 	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
+		for (int j = 0; j < m_numberofcells[0]; j++)
 		{
 
-
-			m_cells[i][j].EarlyUpdate(deltatime);
-
+			m_cells[j][i].AirPressure();
 
 		}
 	}
+	
+	Draw(p_DrawManager);
+
+	/*for (int i = 0; i < m_numberofcells[1]; i++)
+	{
+		for (int j = 0; j < m_numberofcells[0]; j++)
+		{
+			
+			
+			m_cells[j][i].AirPressureForce(deltatime,2,2);
+			
+			
+		}
+	}*/
+
+	
+
+
+
+
+
+	for (int i = 0; i < m_numberofcells[1]; i++)
+	{
+		for (int j = 0; j < m_numberofcells[0]; j++)
+		{
+			if (i == (int)(p_InputManager.m_MousePosition.m_y / m_cellsize))
+			{
+				
+				if (j == (int)(p_InputManager.m_MousePosition.m_x / m_cellsize))
+				{
+					/*system("CLS");
+					printf("%f", (p_InputManager.m_MousePosition.m_y / m_cellsize));
+					printf("%f", (p_InputManager.m_MousePosition.m_x / m_cellsize));*/
+
+				}
+
+			}
+			
+
+
+			if (p_InputManager.m_KeyDown[Key_W])
+			{
+				m_yacc = 1*deltatime;
+
+			}
+			else if (p_InputManager.m_KeyDown[Key_S])
+			{
+				m_yacc = -1 * deltatime;
+
+			}
+			else
+			{
+				m_yacc = 0;
+			}
+
+			if (p_InputManager.m_KeyDown[Key_D])
+			{
+				m_xacc = 1 * deltatime;
+
+			}
+			else if (p_InputManager.m_KeyDown[Key_A])
+			{
+				m_xacc = -1 * deltatime;
+
+			}
+			else
+			{
+				m_xacc = 0;
+			}
+
+			m_cells[j][i].Gravity(m_xacc, m_yacc);
+			
+
+			if (p_InputManager.m_MouseDown)
+			{
+				double t_dx = j * m_cellsize - (p_InputManager.m_MousePosition.m_x);
+				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
+				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
+				if (t_dist != 0)
+				{
+					m_cells[j][i].MovePlayer1(deltatime, (t_dx/t_dist) * sqrtf(t_dist), (t_dy/t_dist)*sqrtf(t_dist));
+				}
+			}
+			else if(p_InputManager.m_RightMouseDown)
+			{
+				double t_dx = j * m_cellsize - p_InputManager.m_MousePosition.m_x;
+				double t_dy = i * m_cellsize - p_InputManager.m_MousePosition.m_y;
+				double t_dist = sqrt(t_dx * t_dx + t_dy * t_dy);
+				if (t_dist !=0)
+				{
+					m_cells[j][i].MovePlayer2(deltatime, -t_dx / (t_dist*t_dist), -t_dy / (t_dist*t_dist));
+				}
+			}
+			
+
+			m_cells[j][i].AirPressureForce(deltatime);
+			if (p_InputManager.m_MouseDown)
+			{
+				m_cells[j][i].m_gQ_down *= 0.99;
+				m_cells[j][i].m_gQ_up *= 0.99;
+				m_cells[j][i].m_gQ_left *= 0.99;
+				m_cells[j][i].m_gQ_right *= 0.99;
+			}
+		}
+	}
+	//system("CLS");
+	//printf("%f", deltatime);
+	//float hey = 0;
+
+	//system("CLS");
+	//for (int i = 0; i < m_numberofcells[1]; i++)
+	//{
+	//	for (int j = 0; j < m_numberofcells[0]; j++)
+	//	{
+
+
+	//		
+	//		totalvolume += m_cells[j][i].m_gas;
+	//		/*printf("%f", m_cells[j][i].m_gQ_left);
+	//		printf(" CELL ");
+	//		printf("%f", m_cells[j][i].m_gQ_right);
+	//		printf("  ");
+	//		*/
+	//	}
+	//	//printf("\n");
+	//}
+	//std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
+	
+	//LateUpdate();
 	
 	for (int i = 0; i < m_numberofcells[0]; i++)
 	{
 		for (int j = 0; j < m_numberofcells[1]; j++)
 		{
-			
-			
-			m_cells[i][j].Update(deltatime);
-			
-			
-		}
-	}
 
-	float hey = 0;
-	
-	for (int i = 0; i < m_numberofcells[0]; i++)
-	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
-		{
-
-
-			
-			totalvolume += m_cells[i][j].m_water;
-
-		}
-	}
-	std::cout << std::fixed << std::setprecision(5) << totalvolume << std::endl;
-	
-	LateUpdate();
-	
-	for (int i = 0; i < m_numberofcells[0]; i++)
-	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
-		{
-
-			m_cells[i][j].LateUpdate(deltatime);
-			std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_total_pressure << std::endl;
+			m_cells[i][j].VelocityUpdate(deltatime);
+			//std::cout << std::fixed << std::setprecision(10) << m_cells[i][j].m_pressure << std::endl;
 		}
 	}
 	
-	for (int i = 0; i < m_numberofcells[0]; i++)
-	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
-		{
-			
-
-			m_cells[i][j].LateUpdate2(deltatime);
-			
-			
-		}
-	}
-	
-	for (int i = 0; i < m_numberofcells[0]; i++)
-	{
-		for (int j = 0; j < m_numberofcells[1]; j++)
-		{
-			
-
-			//m_cells[i][j].LateUpdate3(deltatime);
-
-
-		}
-	}
 }
 
 void GameState::LateUpdate()
